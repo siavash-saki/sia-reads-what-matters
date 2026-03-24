@@ -115,10 +115,14 @@ Fix the offending `.md` file(s) and re-run `npm run build`. Do not proceed to st
 
 ### 8. Commit and push
 
+A GitHub Personal Access Token is stored in the `.env` file as `GITHUB_PAT`. Use it to authenticate when pushing to the repository:
+
 ```bash
 git add content/YYYY-MM-DD/
 git commit -m "Add weekly digest for YYYY-MM-DD"
-git push origin main
+# Read the PAT from .env and use it for push authentication
+GITHUB_PAT=$(grep GITHUB_PAT .env | cut -d '=' -f2)
+git push https://${GITHUB_PAT}@github.com/$(git remote get-url origin | sed 's|.*github.com[:/]||') main
 ```
 
 Vercel deploys automatically on push to `main`.
